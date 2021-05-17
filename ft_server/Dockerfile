@@ -7,4 +7,4 @@ RUN apt-get update && apt-get install -y \
     wget
 # WORKDIR /
 # COPY . /usr/src/app
-ENTRYPOINT ["zsh"]
+ENTRYPOINT ["sh"]
