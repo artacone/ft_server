@@ -1,10 +1,19 @@
 FROM debian:buster
+
 LABEL maintainer="rvertie@student.21-school.ru"
-RUN apt-get update && apt-get install -y \
+
+RUN apt-get update && apt-get upgrade && apt-get install -y \
     mariadb-server \
     nginx \
-    php-fpm php-mysql \
+    openssl \
+    php php-fpm php-mysql \
+    vim \
     wget
-# WORKDIR /
-# COPY . /usr/src/app
-ENTRYPOINT ["sh"]
+
+RUN service nginx start && service mysql start && service php7.3-fpm start
+
+COPY ./srcs /tmp/srcs
+
+EXPOSE 80 443
+
+CMD ["bash", "/tmp/srcs/init.sh"]

@@ -1,46 +1,38 @@
-
 #!/bin/bash
 
-#config nginx
+# initial file copy
+mv ./tmp/srcs/main.html /var/www
 
-rm -rf /etc/nginx/sites-available/default
-mv etc/default etc/nginx/sites-available/.
+#config nginx
+# mv ./tmp/srcs/default /etc/nginx/sites-available/
 chown -R www-data:www-data /var/www
 
-
 # phpmyadmin
-
-wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.tar.gz
-tar -zxvf phpMyAdmin-4.9.0.1-all-languages.tar.gz
-mv phpMyAdmin-4.9.0.1-all-languages phpmyadmin
-mv phpmyadmin /var/www
-rm phpMyAdmin-4.9.0.1-all-languages.tar.gz
-
+wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz
+tar xvfz phpMyAdmin-5.0.1-english.tar.gz && rm phpMyAdmin-5.0.1-english.tar.gz
+mv phpMyAdmin-5.0.1-english /var/www/phpmyadmin
 
 # wordpress
-
 wget https://wordpress.org/latest.tar.gz
-tar xzvf latest.tar.gz
+tar xvfz latest.tar.gz && rm latest.tar.gz
 mv wordpress /var/www
-rm latest.tar.gz
-mv var/wp-config.php var/www/wordpress
-
+mv /tmp/srcs/wp-config.php var/www/wordpress/
 
 # start mysql
-
 service mysql restart
 echo "CREATE USER 'root'@'localhost';" | mysql -u root
 echo "CREATE DATABASE wordpress;" | mysql -u root
 echo "GRANT ALL PRIVILEGES ON wordpress.* TO 'root'@'localhost' identified by 'root';" | mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
 
-
 # certificat SSL
-
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt < /etc/ssl.txt
-
+# openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt < /tmp/srcs/ssl.txt
 
 # restart
 service php7.3-fpm restart
 service nginx restart
+
+# clean-up
+# rm -rf /tmp/srcs
+
 bash
