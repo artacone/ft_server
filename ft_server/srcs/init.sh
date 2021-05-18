@@ -3,8 +3,8 @@
 # initial file copy
 mv ./tmp/srcs/main.html /var/www
 
-#config nginx
-# mv ./tmp/srcs/default /etc/nginx/sites-available/
+# config nginx FIXME default -> .conf
+mv ./tmp/srcs/default /etc/nginx/sites-available/
 chown -R www-data:www-data /var/www
 
 # phpmyadmin
@@ -18,21 +18,21 @@ tar xvfz latest.tar.gz && rm latest.tar.gz
 mv wordpress /var/www
 mv /tmp/srcs/wp-config.php var/www/wordpress/
 
-# start mysql
-service mysql restart
+# start mysql FIXME
+service mysql start
 echo "CREATE USER 'root'@'localhost';" | mysql -u root
 echo "CREATE DATABASE wordpress;" | mysql -u root
 echo "GRANT ALL PRIVILEGES ON wordpress.* TO 'root'@'localhost' identified by 'root';" | mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
 
-# certificat SSL
-# openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt < /tmp/srcs/ssl.txt
+# certificate SSL
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt < /tmp/srcs/ssl.txt
 
-# restart
-service php7.3-fpm restart
-service nginx restart
+# start services
+service php7.3-fpm start
+service nginx start
 
 # clean-up
-# rm -rf /tmp/srcs
+rm -rf /tmp/srcs/ssl.txt
 
 bash

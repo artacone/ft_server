@@ -10,8 +10,6 @@ RUN apt-get update && apt-get upgrade && apt-get install -y \
     vim \
     wget
 
-RUN service nginx start && service mysql start && service php7.3-fpm start
-
 COPY ./srcs /tmp/srcs
 
 EXPOSE 80 443
