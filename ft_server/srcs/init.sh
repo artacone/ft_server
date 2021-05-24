@@ -39,7 +39,7 @@ if [ "$AUTOINDEX" == "OFF" ]
 then
   cd /etc/nginx/conf.d
   sed -i 's/autoindex on;/autoindex off;/g' rvertie.conf
-  sed -i 's/index index.html/# index index.html/g' rvertie.conf
+  sed -i 's/index main.html/# index main.html/g' rvertie.conf
   service nginx restart
 fi
 
